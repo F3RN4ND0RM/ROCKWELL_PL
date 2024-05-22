@@ -4,6 +4,7 @@ require('dotenv').config();
 const cors = require('cors');
 const db = require('../db/connection')
 const productsRoutes = require('../routes/product.routes')
+const usersRoutes = require('../routes/user.routes')
 
 class Server {
     constructor() {
@@ -35,7 +36,7 @@ class Server {
     }
 
     routes() {
-        this.app.use("/products", productsRoutes)
+        this.app.use("/api", productsRoutes, usersRoutes)
     }
 
     listen() {
