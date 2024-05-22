@@ -11,17 +11,6 @@ const Product = sequelize.define('products',{
         autoIncrement: true
     },
     
-    creator:{
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-    date_creation:{
-        type: DataTypes.DATE,
-        allowNull: false,
-    },
-
-
     name_ : {
         type: DataTypes.STRING,
         allowNull: false,
@@ -29,11 +18,6 @@ const Product = sequelize.define('products',{
 
     category : {
         type: DataTypes.STRING,
-        allowNull: false,
-    },
-
-    status : {
-        type: DataTypes.BOOLEAN,
         allowNull: false,
     },
 
@@ -48,9 +32,21 @@ const Product = sequelize.define('products',{
     },
 
     total_clicks :{
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER
+    },
+
+    status :{
+        type: DataTypes.BOOLEAN
+    },
+
+    creator:{
+        type: DataTypes.STRING,
         allowNull: false,
-    }
+    },
+
+    date_creation:{
+        type: DataTypes.DATE
+    },
     
 },{
     timestamps: false,

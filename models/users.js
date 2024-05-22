@@ -21,6 +21,12 @@ const User = sequelize.define('users',{
         allowNull: false,
     },
 
+
+    password_ : {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+
     company:{
         type: DataTypes.STRING,
         allowNull: false,
@@ -32,13 +38,11 @@ const User = sequelize.define('users',{
     },
 
     grades:{
-        type: DataTypes.NUMBER,
-        allowNull: false,
+        type: DataTypes.NUMBER
     },
 
     max_score:{
         type: DataTypes.NUMBER,
-        allowNull: false,
     },
 
 
@@ -52,18 +56,15 @@ const User = sequelize.define('users',{
         allowNull: false,
     },
     rol : {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
+        type: DataTypes.BOOLEAN
     },
 
     status : {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
+        type: DataTypes.BOOLEAN
     },
 
     date_creation:{
-        type: DataTypes.DATE,
-        allowNull: false,
+        type: DataTypes.DATE
     },
 
     
