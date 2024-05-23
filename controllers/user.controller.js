@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/users')
+const jwt = require("jsonwebtoken");
+
 
 
 
@@ -20,21 +22,39 @@ exports.getUsers = async ( req, res) =>{
 }
 
 
-exports.getUserById = async ( req, res) =>{
+exports.loginUser = async ( req, res) =>{
 
     try{
 
-        const { id } = req.params
+        const { email, password_ } = req.body
 
         const user = await User.findOne({where: {
             status : true,
-            id: id
+            email: email
         }})
 
-        if(user)
-            return res.status(200).json(user)
+        if(!user)
+            return res.status(404).json({msg : "wrong user or password"})
                            
-        return res.status(404).json({msg : "Not found"})
+        validPassword = await bcrypt.compare(password_, user.password_)
+
+        if(!validPassword)
+            return res.status(404).json({msg : "wrong user or password"})
+
+        const token = jwt.sign({id: user.id, email: user.email, rol:user.rol, first_name: user.first_name}, process.env.SECRET, {expiresIn: "1h"})
+
+        console.log(`Token generado: ${token}`)
+
+
+
+        res.cookie('authToken', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production', // Ensure cookies are sent over HTTPS in production
+            sameSite: 'strict', // Protects against CSRF attacks
+            maxAge: 3600000 // 1 hour in milliseconds
+          });
+
+        return res.status(200).json({msg : "welcome"})
 
     }catch(error){
         return res.status(400).json({msg : "Something went wrong", errores : error.message})
