@@ -1,4 +1,5 @@
-const Product = require('../models/products');
+
+const {Product , User, ProdXUser} = require('../models/associations')
 
 
 exports.getProducts  = async (req, res) => {
@@ -54,5 +55,27 @@ exports.postProducts = async (req, res) => {
 
     }catch(error){
         return res.status(400).json({msg : "Something went wrong", errores : error.message})
+    }
+}
+
+exports.clickProduct = async (req, res) =>{
+    
+    const  {idUser}  = req.body
+    const  {idProduct}  = req.params
+
+    try{
+
+        const prodxuser =  await ProdXUser.create({
+            product_id : idProduct,
+            user_id : idUser
+        });
+
+        if(!prodxuser)
+            return res.status(400).json({msg : "Something went wrong", errores : error.message})        
+
+        res.status(200).json({msg : "Click registered succesfully"});            
+
+    }catch(error){
+        return res.status(400).json({msg : "Something went wrong", errores : error.message})        
     }
 }

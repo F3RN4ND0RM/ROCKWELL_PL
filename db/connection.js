@@ -6,9 +6,11 @@ const  db = new Sequelize(process.env.DBURL, {
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false
+        rejectUnauthorized: false,
+        useUTC: false
       }
-    }
+    },
+    "timezone" : '-12:00'
 })
 
 module.exports = db

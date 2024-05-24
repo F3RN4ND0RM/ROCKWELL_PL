@@ -7,7 +7,13 @@ const productsRoutes = require('../routes/product.routes')
 const usersRoutes = require('../routes/user.routes')
 
 class Server {
+
+    app ;
+
     constructor() {
+
+        
+
         this.app = express();
         this.port = process.env.PORT;
 
