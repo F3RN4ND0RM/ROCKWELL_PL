@@ -6,9 +6,7 @@ const {validateProdXUser} = require('../middlewares/validate-prodXuser')
 const {validateForm} = require('../middlewares/validate-form')
 
 
-router.get('/products/clicks/:idProduct', [
-    check('idUser', 'id can not be empty').notEmpty(),
-    validateForm,
+router.get('/products/clicks', [
     validateProdXUser
     ], clickProduct)
 

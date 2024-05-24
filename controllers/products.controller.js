@@ -60,8 +60,9 @@ exports.postProducts = async (req, res) => {
 
 exports.clickProduct = async (req, res) =>{
     
-    const  {idUser}  = req.body
-    const  {idProduct}  = req.params
+
+    const  idUser  = req.query.idUser
+    const  idProduct  = req.query.idProduct
 
     try{
 
@@ -73,6 +74,7 @@ exports.clickProduct = async (req, res) =>{
         if(!prodxuser)
             return res.status(400).json({msg : "Something went wrong", errores : error.message})        
 
+ 
         res.status(200).json({msg : "Click registered succesfully"});            
 
     }catch(error){

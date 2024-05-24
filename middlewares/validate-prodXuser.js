@@ -9,10 +9,12 @@ const {Product , User, ProdXUser} = require('../models/associations')
 const validateProdXUser = async (req , res,  next ) => {
 
 
-    const  {idUser}  = req.body
-    const  {idProduct}  = req.params
+    const  idUser  = req.query.idUser
+    const  idProduct  = req.query.idProduct
 
 
+    if(!idUser || !idProduct )
+        return res.status(400).json({msg :  "idUser or idProduct empty"})
 
     product = await Product.findOne({where : { id : idProduct}})
 
