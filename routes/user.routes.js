@@ -10,7 +10,7 @@ const {getUsers, postUser, loginUser} = require ('../controllers/user.controller
 router.get('/users', getUsers);
 
 
-router.get('/login', [
+router.post('/login', [
         check('email', 'email incorrect format').isEmail(),
         check('password_', 'password can not be empty').notEmpty(),
         validateForm
