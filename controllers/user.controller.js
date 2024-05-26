@@ -81,3 +81,20 @@ exports.loginUser = async ( req, res) =>{
         return res.status(400).json({msg : "Something went wrong", errores : error.message})        
     }
  }
+
+
+ exports.logoutUser = async (req, res) => {
+
+    try{
+        res.cookie('authToken', '', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            expires: new Date(0),
+            path: '/',
+        });
+        res.status(200).send('Logged out successfully');
+    } catch (error) {
+        return res.status(400).json({msg : "Something went wrong", errores : error.message})
+    }
+}
