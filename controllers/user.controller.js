@@ -41,7 +41,7 @@ exports.loginUser = async ( req, res) =>{
         if(!validPassword)
             return res.status(404).json({msg : "wrong user or password"})
 
-        const token = jwt.sign({id: user.id, email: user.email, rol:user.rol, first_name: user.first_name}, process.env.SECRET, {expiresIn: "1h"})
+        const token = jwt.sign({id: user.id, email: user.email, rol:user.rol, first_name: user.first_name, tscore: user.max_score}, process.env.SECRET, {expiresIn: "1h"})
 
         console.log(`Token generado: ${token}`)
 
@@ -72,8 +72,17 @@ exports.loginUser = async ( req, res) =>{
 
         const user = await User.create(body);
 
-        if(user)
-            return res.status(200).json({msg : "User Created Succesfully", user : user})
+        if(user){
+            const token = jwt.sign({id: user.id, email: user.email, rol:user.rol, first_name: user.first_name, tscore: user.max_score}, process.env.SECRET, {expiresIn: "1h"})
+            res.cookie('authToken', token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production', // Ensure cookies are sent over HTTPS in production
+                sameSite: 'strict', // Protects against CSRF attacks
+                maxAge: 3600000 // 1 hour in milliseconds
+              });
+
+            return res.status(200).json({msg : "User Created Succesfully"})
+        }
 
         return res.status(400).json({msg : "Something went wrong", errores : error.message})
 
@@ -81,3 +90,20 @@ exports.loginUser = async ( req, res) =>{
         return res.status(400).json({msg : "Something went wrong", errores : error.message})        
     }
  }
+
+
+ exports.logoutUser = async (req, res) => {
+
+    try{
+        res.cookie('authToken', '', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            expires: new Date(0),
+            path: '/',
+        });
+        res.status(200).send('Logged out successfully');
+    } catch (error) {
+        return res.status(400).json({msg : "Something went wrong", errores : error.message})
+    }
+}

@@ -2,6 +2,7 @@
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const db = require('../db/connection')
 const productsRoutes = require('../routes/product.routes')
 const usersRoutes = require('../routes/user.routes')
@@ -37,8 +38,19 @@ class Server {
     }
 
     middlewares() {
-        this.app.use(cors());
+        this.app.use(cors({
+            origin: function (origin, callback) {
+                const allowedOrigins = process.env.ALLOWED_ORIGINS.split(',');
+                if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+                    callback(null, true);
+                } else {
+                    callback(new Error('Not allowed by CORS'));
+                }
+            },
+            credentials: true
+          }));
         this.app.use(express.json());
+        this.app.use(cookieParser());
     }
 
     routes() {

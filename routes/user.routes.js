@@ -2,10 +2,11 @@ const express = require('express');
 const router = express.Router();
 const {validateForm} = require('../middlewares/validate-form')
 const {validateEmail} = require('../middlewares/validate-email')
-const { check } = require ("express-validator");
+const {validateToken} = require('../middlewares/validate-token');
+const {validateRole} = require('../middlewares/validate-role');
+const {check} = require ("express-validator");
 
-
-const {getUsers, postUser, loginUser} = require ('../controllers/user.controller')
+const {getUsers, postUser, loginUser, logoutUser} = require ('../controllers/user.controller');
 
 router.get('/users', getUsers);
 
@@ -15,6 +16,10 @@ router.post('/login', [
         check('password_', 'password can not be empty').notEmpty(),
         validateForm
     ],loginUser);
+
+
+router.post('/logout', logoutUser);
+
 
 router.post('/users',[
     check('first_name', 'first name can not be empty').notEmpty(),
@@ -27,5 +32,11 @@ router.post('/users',[
     validateEmail,   
     validateForm
     ], postUser)
+
+    
+router.get('/check-auth', 
+    validateToken, 
+    (req, res) => {res.json({ isAuthenticated: true });});
+
 
 module.exports = router
