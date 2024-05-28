@@ -6,9 +6,12 @@ const {validateToken} = require('../middlewares/validate-token');
 const {validateRole} = require('../middlewares/validate-role');
 const {check} = require ("express-validator");
 
-const {getUsers, postUser, loginUser, logoutUser} = require ('../controllers/user.controller');
+const {getUsers, getUser, postUser, loginUser, logoutUser} = require ('../controllers/user.controller');
 
 router.get('/users', getUsers);
+
+
+router.get('/user', validateToken, getUser);
 
 
 router.post('/login', [
