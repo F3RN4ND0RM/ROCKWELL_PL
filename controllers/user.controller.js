@@ -71,7 +71,7 @@ exports.loginUser = async ( req, res) =>{
 
         res.cookie('authToken', token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production', // Ensure cookies are sent over HTTPS in production
+            secure: true, // Ensure cookies are sent over HTTPS in production
             sameSite: 'none', // Protects against CSRF attacks
             maxAge: 3600000 // 1 hour in milliseconds
           });
