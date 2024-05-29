@@ -11,7 +11,7 @@ const {getUsers, getUser, postUser, loginUser, logoutUser} = require ('../contro
 router.get('/users', getUsers);
 
 
-router.get('/user', validateToken, getUser);
+router.get('/user', getUser);
 
 
 router.post('/login', [

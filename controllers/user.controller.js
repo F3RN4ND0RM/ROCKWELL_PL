@@ -22,15 +22,15 @@ exports.getUsers = async ( req, res) =>{
 }
 
 
-exports.getUser = async ( req, res) =>{
+exports.getUser = async (req, res) =>{
     
     try{
 
-        const userId = req.user.id
+        const userId = req.query.id
 
         const user = await User.findOne({
             where: { id: userId },
-            attributes: ['rol', 'first_name', 'last_name', 'company', 'email', 'max_score', 'language']
+            attributes: ['rol', 'first_name', 'last_name', 'company', 'email', 'max_score']
         })
 
         if(!user)
@@ -63,7 +63,7 @@ exports.loginUser = async ( req, res) =>{
         if(!validPassword)
             return res.status(404).json({msg : "wrong user or password"})
 
-        const token = jwt.sign({id: user.id}, process.env.SECRET, {expiresIn: "1h"})
+        const token = jwt.sign({id: user.id, email: user.email, rol:user.rol, first_name: user.first_name, max_score: user.max_score}, process.env.SECRET, {expiresIn: "1h"})
 
         console.log(`Token generado: ${token}`)
 
@@ -95,7 +95,7 @@ exports.loginUser = async ( req, res) =>{
         const user = await User.create(body);
 
         if(user){
-            const token = jwt.sign({id: user.id, email: user.email, rol:user.rol, first_name: user.first_name, tscore: user.max_score}, process.env.SECRET, {expiresIn: "1h"})
+            const token = jwt.sign({id: user.id, email: user.email, rol:user.rol, first_name: user.first_name, max_score: user.max_score}, process.env.SECRET, {expiresIn: "1h"})
             res.cookie('authToken', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production', // Ensure cookies are sent over HTTPS in production
