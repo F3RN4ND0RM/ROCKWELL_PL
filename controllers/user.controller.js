@@ -72,7 +72,7 @@ exports.loginUser = async ( req, res) =>{
         res.cookie('authToken', token, {
             httpOnly: true,
             secure: true, // Ensure cookies are sent over HTTPS in production
-            sameSite: 'Lax', // Protects against CSRF attacks
+            sameSite: 'none', // Protects against CSRF attacks
             maxAge: 3600000 // 1 hour in milliseconds
           });
 
