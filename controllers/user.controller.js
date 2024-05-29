@@ -73,7 +73,6 @@ exports.loginUser = async ( req, res) =>{
             httpOnly: true,
             secure: true, // Ensure cookies are sent over HTTPS in production
             sameSite: 'none', // Protects against CSRF attacks
-            domain: 'https://pagina-web-delta.vercel.app',
             maxAge: 3600000 // 1 hour in milliseconds
           });
 
