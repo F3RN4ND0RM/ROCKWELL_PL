@@ -6,9 +6,12 @@ const {validateToken} = require('../middlewares/validate-token');
 const {validateRole} = require('../middlewares/validate-role');
 const {check} = require ("express-validator");
 
-const {getUsers, postUser, loginUser, logoutUser} = require ('../controllers/user.controller');
+const {getUsers, getUser, postUser, loginUser, logoutUser, deleteUser, saveGame} = require ('../controllers/user.controller');
 
 router.get('/users', getUsers);
+
+
+router.get('/user', getUser);
 
 
 router.post('/login', [
@@ -31,12 +34,15 @@ router.post('/users',[
     check('gender', 'gender can not be empty').notEmpty(),    
     validateEmail,   
     validateForm
-    ], postUser)
+    ], postUser);
 
+router.post('/deleteUser', validateToken, deleteUser);
     
 router.get('/check-auth', 
     validateToken, 
     (req, res) => {res.json({ isAuthenticated: true });});
 
 
+router.post('/saveGame', validateToken, saveGame);
+    
 module.exports = router
